@@ -24,7 +24,7 @@ const int kDotWidth = 7;
         self.delegate = self;
         pageControlBeingUsed = NO;
         self.bounces = NO;
-        pageControl = [[UIPageControl alloc] init];
+        self.pageControl = [[UIPageControl alloc] init];
     }
     return self;
 }
@@ -48,8 +48,8 @@ const int kDotWidth = 7;
     //if hasPageControl is true
     if (hasPageControl) {
         //set number of page based on number of pages to show and set current page to the first object
-        [pageControl setNumberOfPages:[_pages count]];
-        [pageControl setCurrentPage:0];
+        [self.pageControl setNumberOfPages:[_pages count]];
+        [self.pageControl setCurrentPage:0];
         //calculate the page control width considering that a dot is 20px, so we can multiply by the number of page to have the width of the page control
         int pWidth = kDotWidth * [_pages count];
         //calculate the scroll view center
@@ -58,19 +58,19 @@ const int kDotWidth = 7;
         int pageControlX = scrollViewCenterPointX - (pWidth / 2);
         int pageControlY = self.frame.origin.y + self.frame.size.height + 5;
         //set the frame of the page control
-        [pageControl setFrame:CGRectMake(pageControlX, pageControlY, pWidth, 36)];
+        [self.pageControl setFrame:CGRectMake(pageControlX, pageControlY, pWidth, 36)];
         //set target and selector for page control
-        [pageControl addTarget:self action:@selector(changePage:) forControlEvents:UIControlEventValueChanged];
+        [self.pageControl addTarget:self action:@selector(changePage:) forControlEvents:UIControlEventValueChanged];
         //set colors for indicators
-        [pageControl setPageIndicatorTintColor:[UIColor yellowColor]];
-        [pageControl setCurrentPageIndicatorTintColor:[UIColor redColor]];
+        [self.pageControl setPageIndicatorTintColor:[UIColor yellowColor]];
+        [self.pageControl setCurrentPageIndicatorTintColor:[UIColor redColor]];
         //add page control to superview
-        [[self superview] addSubview:pageControl];
+        [[self superview] addSubview:self.pageControl];
     } else {
         //remove the page control from superview
         for (UIPageControl *pControl in [[self superview] subviews]) {
-            if ([pControl isEqual:pageControl]) {
-                [pageControl removeFromSuperview];
+            if ([pControl isEqual:self.pageControl]) {
+                [self.pageControl removeFromSuperview];
             }
         }
     }
@@ -79,13 +79,13 @@ const int kDotWidth = 7;
 //set the color of the current page dot
 - (void)setPageControlCurrentPageColor:(UIColor *)pageControlCurrentPageColor {
     _pageControlCurrentPageColor = pageControlCurrentPageColor;
-    pageControl.currentPageIndicatorTintColor = pageControlCurrentPageColor;
+    self.pageControl.currentPageIndicatorTintColor = pageControlCurrentPageColor;
 }
 
 //set the color of the others pages indicators
 - (void)setPageControlOtherPagesColor:(UIColor *)pageControlOtherPagesColor {
     _pageControlOtherPagesColor = pageControlOtherPagesColor;
-    pageControl.pageIndicatorTintColor = pageControlOtherPagesColor;
+    self.pageControl.pageIndicatorTintColor = pageControlOtherPagesColor;
 }
 
 #pragma mark - Add pages
@@ -112,7 +112,7 @@ const int kDotWidth = 7;
 - (void)changePage:(id)sender {
     //update the scroll view to the appropriate page
 	CGRect frame;
-	frame.origin.x = self.frame.size.width * pageControl.currentPage;
+	frame.origin.x = self.frame.size.width * self.pageControl.currentPage;
 	frame.origin.y = 0;
 	frame.size = self.frame.size;
 	[self scrollRectToVisible:frame animated:YES];
@@ -128,7 +128,7 @@ const int kDotWidth = 7;
 		CGFloat pageWidth = self.frame.size.width;
 		NSInteger page = floor((self.contentOffset.x - pageWidth / 2) / pageWidth) + 1;
 		self.currentPage = page;
-        pageControl.currentPage = self.currentPage;
+        self.pageControl.currentPage = self.currentPage;
 	}
 }
 

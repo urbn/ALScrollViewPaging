@@ -11,13 +11,13 @@
 @interface ALScrollViewPaging : UIScrollView <UIScrollViewDelegate> {
     BOOL pageControlBeingUsed;
     NSArray *_pages;
-    UIPageControl *pageControl;
 }
 
 @property (nonatomic) int currentPage;
 @property (nonatomic) BOOL hasPageControl;
 @property (nonatomic, strong) UIColor *pageControlCurrentPageColor;
 @property (nonatomic, strong) UIColor *pageControlOtherPagesColor;
+@property (nonatomic, strong) UIPageControl *pageControl;
 
 - (id)initWithFrame:(CGRect)frame andPages:(NSArray *)pages;
 - (void)addPages:(NSArray *)pages;
